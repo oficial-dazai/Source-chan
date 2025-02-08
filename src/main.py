@@ -2,10 +2,13 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
+from task_list import register_task_list
 
 load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
+# Opcional: defina o ID da guild para testes imediatos dos comandos slash
+GUILD_ID = os.getenv("GUILD_ID")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -17,8 +20,15 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f'Bot conectado com sucesso como: {bot.user}')
     try:
-        synced = await bot.tree.sync()
-        print(f"Comandos sincronizados: {len(synced)}")
+        if GUILD_ID:
+            # Se GUILD_ID estiver definido, sincroniza os comandos somente para essa guild (aparecem imediatamente)
+            guild = discord.Object(id=int(GUILD_ID))
+            synced = await bot.tree.sync(guild=guild)
+            print(f"Comandos sincronizados na guild {GUILD_ID}: {len(synced)}")
+        else:
+            # Caso contrário, sincroniza os comandos globalmente (pode levar até 1 hora para aparecer)
+            synced = await bot.tree.sync()
+            print(f"Comandos sincronizados globalmente: {len(synced)}")
     except Exception as e:
         print(f"Erro na sincronização: {e}")
 
@@ -46,11 +56,13 @@ async def on_member_join(member):
 async def sobre(ctx):
     embed = discord.Embed(
         title='Sobre mim',
-        description=f'Meu nome é Yumi Takahashi, mas você pode me chamar de Source-chan!',
+        description='Meu nome é Yumi Takahashi, mas você pode me chamar de Source-chan!',
         color=discord.Color.green()
     )
     embed.add_field(name='comandos disponiveis', value="`!ping`, `!sobre`", inline=False)
     embed.set_footer(text='Fui desenvolvida por: Dazai')
     await ctx.send(embed=embed)
+
+register_task_list(bot)
 
 bot.run(TOKEN)
