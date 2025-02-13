@@ -38,18 +38,18 @@ async def ping(ctx):
     latency = round(bot.latency * 1000)
     await ctx.send(f'Pong! Latência {latency}ms')
 
-# Evento para dar boas-vindas a novos membros
-@bot.event
-async def on_member_join(member):
-    guild = member.guild
-    if guild.system_channel:
-        embed = discord.Embed(
-            title='Bem-vindo a Source BR Community!',
-            description=f'Olá {member.mention}, seja bem-vindo a **{guild.name}**!',
-            color=discord.Color.green()
-        )
-        embed.set_thumbnail(url=member.avatar.url if member.avatar else bot.user.avatar.url)
-        await guild.system_channel.send(embed=embed)
+# Evento para dar boas-vindas a novos membros (desativada)
+# @bot.event
+# async def on_member_join(member):
+#     guild = member.guild
+#     if guild.system_channel:
+#         embed = discord.Embed(
+#             title='Bem-vindo a Source BR Community!',
+#             description=f'Olá {member.mention}, seja bem-vindo a **{guild.name}**!',
+#             color=discord.Color.green()
+#         )
+#         embed.set_thumbnail(url=member.avatar.url if member.avatar else bot.user.avatar.url)
+#         await guild.system_channel.send(embed=embed)
 
 # Comando para exibir informações sobre a Source-chan
 @bot.command(name='sobre')

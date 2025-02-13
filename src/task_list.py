@@ -39,10 +39,10 @@ class TaskManager:
 
     def formatar_lista(self):
         porcentagem = self.calcular_porcentagem()
-        lista_formatada = [f"# {self.titulo} ({porcentagem}%)"]
+        lista_formatada = [f"# {self.titulo} `({porcentagem}%)`"]
         for i, tarefa in enumerate(self.tarefas):
-            prefixo = "<a:setawhite:1319031947145646151> " if i == self.index_selecionado else "   "
-            status = "<:check:1318998939109822565>" if self.concluidas[i] else "<:nocheck:1318998937042157569>"
+            prefixo = "<a:setawhite:1339687866451759236> " if i == self.index_selecionado else "   "
+            status = "<:check:1339687857010249894>" if self.concluidas[i] else "<:nocheck:1339687841936183387>"
             lista_formatada.append(f"{prefixo}{status} {tarefa}")
         return "\n".join(lista_formatada)
 
